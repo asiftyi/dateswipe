@@ -1,0 +1,9 @@
+date_swipe.db
+date_swipe.db-journal
+config.json
+__pycache__/
+*.pyc
+uploads/*
+!uploads/.gitkeep
+*.log
+.env

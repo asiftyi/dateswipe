@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>DateSwipe — Find your match</title>
+<meta name="description" content="DateSwipe — swipe, match, chat and video call.">
+<meta name="theme-color" content="#121016">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DateSwipe">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- AUTH -->
+  <div class="view" id="v-auth">
+    <div class="logo">💘<span>DateSwipe</span></div>
+    <div class="tagline">Swipe. Match. Chat. Fall in love.</div>
+    <div class="tabs">
+      <button id="tabLogin" class="on">Log in</button>
+      <button id="tabSignup">Sign up</button>
+    </div>
+    <div id="formLogin">
+      <label class="f">Email</label><input id="liEmail" type="email" autocomplete="email">
+      <label class="f">Password</label><input id="liPass" type="password" autocomplete="current-password">
+      <button class="btn" id="btnLogin">Log in</button>
+    </div>
+    <div id="formSignup" style="display:none">
+      <label class="f">Name</label><input id="suName" maxlength="40">
+      <label class="f">Email</label><input id="suEmail" type="email" autocomplete="email">
+      <label class="f">Password (min 6)</label><input id="suPass" type="password" autocomplete="new-password">
+      <label class="f">Birthdate</label><input id="suDob" type="date">
+      <div class="row2">
+        <div><label class="f">I am</label><select id="suGender">
+          <option value="female">Woman</option><option value="male">Man</option></select></div>
+        <div><label class="f">Looking for</label><select id="suLooking">
+          <option value="everyone">Everyone</option><option value="female">Women</option>
+          <option value="male">Men</option></select></div>
+      </div>
+      <label class="f">Referral code (optional)</label><input id="suRef" maxlength="8" placeholder="Have a code?">
+      <button class="btn" id="btnSignup">Create account</button>
+      <div class="note18">🔞 You must be 18 or older to use DateSwipe.</div>
+    </div>
+    <div class="err" id="authErr"></div>
+    <div class="fineprint">By signing up you agree to our
+      <a href="#" id="linkPrivacy1">Privacy Policy</a></div>
+  </div>
+
+  <!-- DISCOVER -->
+  <div class="view" id="v-discover">
+    <h2>💘 Discover</h2>
+    <div id="stack"></div>
+    <div id="swipeBtns">
+      <button class="rbtn nope" id="btnNope" aria-label="Pass">✕</button>
+      <button class="rbtn super" id="btnSuper" aria-label="Super like">⭐</button>
+      <button class="rbtn like" id="btnLike" aria-label="Like">♥</button>
+    </div>
+    <div class="adslot" id="adDiscover"></div>
+  </div>
+
+  <!-- MATCHES -->
+  <div class="view" id="v-matches">
+    <h2>💬 Matches</h2>
+    <div id="matchList"></div>
+    <div class="adslot" id="adMatches"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="view" id="v-chat">
+    <div id="chatHead">
+      <button class="back" id="chatBack">‹</button>
+      <div class="avatar" id="chatAvatar">?</div>
+      <div style="flex:1"><b id="chatName">—</b><div class="muted" id="chatAge"></div></div>
+      <button class="btn small" id="btnGame" title="Play a game">🎮</button>
+      <button class="btn small" id="btnGift" title="Send a gift">🎁</button>
+      <button class="btn small" id="btnCall">📹</button>
+    </div>
+    <div id="msgs"></div>
+    <div class="adslot" id="adChat"></div>
+    <div id="sendRow">
+      <input id="msgInput" maxlength="500" placeholder="Say something nice…">
+      <button class="btn" id="btnSend">➤</button>
+    </div>
+  </div>
+
+  <!-- INVITE -->
+  <div class="view" id="v-invite">
+    <h2>💰 Invite &amp; Earn</h2>
+    <div class="inviteCard">
+      <b>Give friends 7 days of Premium — get 7 days yourself!</b>
+      <div class="howto" style="margin-top:10px">
+        1️⃣ Share your invite link<br>
+        2️⃣ Friend signs up (18+) with your code<br>
+        3️⃣ You both get <b>7 days of Premium</b> free 🎉
+      </div>
+      <div class="inviteLink" id="inviteLink">…</div>
+      <button class="btn" id="btnCopyLink">📋 Copy invite link</button>
+      <button class="btn ghost" id="btnShare">↗ Share</button>
+      <div class="stat3">
+        <div><b id="statInvites">0</b><span>friends joined</span></div>
+        <div><b id="statDays">0</b><span>premium days earned</span></div>
+      </div>
+      <div class="muted" style="font-size:12px">Cash payouts (if any) are settled manually
+        by the operator — in-app rewards are Premium days.</div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="v-profile">
+    <h2>👤 Profile</h2>
+    <div class="premiumBox" id="premBox"></div>
+    <div class="pcar" id="pcar"></div>
+    <div class="pstrip" id="pstrip"></div>
+    <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp" style="display:none">
+    <label class="f">Name</label><input id="pfName" maxlength="40">
+    <label class="f">Bio</label><textarea id="pfBio" maxlength="500"></textarea>
+    <label class="f">Interests (comma separated)</label><input id="pfInterests" maxlength="300">
+    <div class="row2">
+      <div><label class="f">I am</label><select id="pfGender">
+        <option value="female">Woman</option><option value="male">Man</option></select></div>
+      <div><label class="f">Looking for</label><select id="pfLooking">
+        <option value="everyone">Everyone</option><option value="female">Women</option>
+        <option value="male">Men</option></select></div>
+    </div>
+    <div class="inforow" style="margin-top:8px">
+      <span class="ic">👁️</span>
+      <div style="flex:1"><b>Show me in Discover</b><span class="lab">Pause to hide your profile</span></div>
+      <label class="switch"><input type="checkbox" id="pfDiscoverable" checked>
+        <span class="tr"></span><span class="th"></span></label>
+    </div>
+    <button class="btn" id="btnSaveProfile">Save profile</button>
+    <button class="btn ghost" id="btnLogout">Log out</button>
+    <div class="err" id="pfErr"></div>
+    <div class="fineprint"><a href="#" id="linkPrivacy2">Privacy Policy</a></div>
+  </div>
+
+  <!-- PRIVACY -->
+  <div class="view" id="v-privacy">
+    <h2>🔒 Privacy Policy</h2>
+    <div class="policy">
+      <p><b>DateSwipe</b> is an 18+ dating service. By using it you confirm you are at least 18 years old.</p>
+      <p><b>What we collect:</b> your name, email, birthdate, gender preference, profile details and photos you upload, plus your swipes, matches and messages so the service can work.</p>
+      <p><b>Photos &amp; messages</b> are stored on our server and shown only as needed for the service (your profile to other users; messages to your matches).</p>
+      <p><b>Cookies:</b> we use a single login cookie to keep you signed in. No tracking cookies of our own.</p>
+      <p><b>Advertising:</b> we may show ads served by Google AdSense or similar partners, which use cookies to personalise ads. You can opt out of personalised advertising at Google's Ads Settings. We never sell your personal data.</p>
+      <p><b>Your control:</b> you can edit or delete your photos anytime in Profile, block or report users, and ask the operator to delete your account and data.</p>
+      <p><b>Contact:</b> the site operator — details on the login page of the live site.</p>
+      <p class="muted">Last updated: October 2026.</p>
+    </div>
+    <button class="btn ghost" id="privacyBack">‹ Back</button>
+  </div>
+
+  <!-- PREMIUM -->
+  <div class="view" id="v-premium">
+    <h2>⭐ Go Premium</h2>
+    <div class="glowcard">
+      <div class="muted" style="font-weight:700;letter-spacing:1px">DATESWIPE PREMIUM</div>
+      <div class="price">$4.99<span>/month</span></div>
+      <div style="text-align:left;margin:8px 0">
+        <div class="feat">💛 <span><b>Unlimited likes</b> — no daily cap</span></div>
+        <div class="feat">👀 <span><b>See who liked you</b> before you swipe</span></div>
+        <div class="feat">⚡ <span><b>Priority</b> in Discover stacks</span></div>
+        <div class="feat">📹 <span><b>Video calls</b> with every match</span></div>
+      </div>
+      <div id="payArea"></div>
+    </div>
+    <button class="btn ghost" id="premBack">‹ Back</button>
+  </div>
+
+  <nav id="nav" style="display:none">
+    <div class="track">
+      <div id="navInd"></div>
+      <button data-v="v-discover"><span class="ico">💘</span>Discover</button>
+      <button data-v="v-matches"><span class="ico">💬</span>Matches</button>
+      <button data-v="v-invite"><span class="ico">💰</span>Invite</button>
+      <button data-v="v-profile"><span class="ico">👤</span>Profile</button>
+    </div>
+  </nav>
+</div>
+
+<!-- match modal -->
+<div id="modal"><div class="mbox" id="modalBox"></div></div>
+
+<!-- incoming call modal (reuses #modal) -->
+
+<!-- call overlay -->
+<div id="callOverlay">
+  <div id="callStatus">Connecting…</div>
+  <video id="remoteVideo" autoplay playsinline></video>
+  <video id="localVideo" autoplay playsinline muted></video>
+  <div id="callCtrls">
+    <button class="cbtn" id="btnMute" title="Mute">🎙</button>
+    <button class="cbtn hang" id="btnHangup" title="Hang up">📞</button>
+    <button class="cbtn" id="btnCam" title="Camera">📷</button>
+  </div>
+</div>
+
+<!-- game overlay -->
+<div id="gameOverlay">
+  <div id="gameHead">
+    <button class="cbtn" id="gameClose" style="width:44px;height:44px;font-size:18px">✕</button>
+    <b id="gameTitle">Game</b>
+    <div style="width:44px"></div>
+  </div>
+  <div id="gameBody"></div>
+</div>
+
+<div id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>

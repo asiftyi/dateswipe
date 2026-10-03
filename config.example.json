@@ -1,0 +1,1 @@
+{"admin_token":"PASTE_FROM_config.json_AFTER_FIRST_RUN","ads":{"client_id":"ca-pub-XXXXXXXXXXXXXXXX","enabled":false,"slots":{"chat":"3333333333","discover":"1111111111","matches":"2222222222"}},"secret":"AUTO_GENERATED_ON_FIRST_RUN","stripe_payment_link":""}

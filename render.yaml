@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: dateswipe
+    env: python
+    plan: free
+    startCommand: python3 app.py
+    healthCheckPath: /
