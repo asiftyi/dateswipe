@@ -14,6 +14,8 @@ python3 app.py
 
 First run creates `date_swipe.db` (SQLite) and `config.json` (app secret + admin token).
 Demo data: `python3 seed_demo.py` → 8 fictional profiles, password `demo1234` for all.
+Hosting platforms set `PORT` themselves — the app reads it from the environment
+(`PORT=10000 python3 app.py`) and binds `0.0.0.0` in that case.
 
 ## Features
 
@@ -91,13 +93,29 @@ marketing clean, 18+ gate strictly enforced (already built in).
 ads pay once traffic exists. Avoid cheap networks (Adsterra etc.) — their
 gambling/adult ads destroy trust in a dating app.
 
-## Deploy notes
+## Deploy notes — Render.com free tier (no credit card needed)
 
-- Needs **HTTPS** (getUserMedia/video calls and PWA install require a secure context;
-  `localhost` counts as secure for testing).
-- Any small **VPS** works: `python3 app.py` behind nginx/Caddy as a reverse proxy.
-  SQLite = single server; for scale, migrate to Postgres later.
+The app is Render-ready (`render.yaml` included, Python stdlib only — no build step).
+
+1. Push this folder to a **GitHub repo** (code only — `date_swipe.db` and `config.json`
+   are git-ignored and stay on your machine).
+2. Go to [render.com](https://render.com) → sign up (free, no card) → **New +** →
+   **Web Service** → connect your repo. Render auto-detects `render.yaml`.
+3. Keep **Environment: Python**, **Plan: Free**, Start Command: `python3 app.py`.
+4. Deploy → you get a public HTTPS URL like `https://dateswipe.onrender.com`
+   (free `*.onrender.com` subdomain, SSL included).
+
+**⚠️ Honest free-tier limits:**
+- **Sleeps after 15 min idle** — first visit after sleep takes 30–60s to wake up (cold start).
+- **Disk is ephemeral** — the SQLite DB (`date_swipe.db`) **resets on every restart/redeploy**.
+  Fine for demos; a real launch needs the paid plan ($7/mo) with a persistent disk,
+  or a Postgres migration.
+- 512 MB RAM / shared CPU — fine for this app's traffic, not for heavy load.
 - Keep `config.json` secret (it holds the session-signing key + admin token).
+
+**Custom domain later:** Render → Settings → Custom Domain → point your domain's
+DNS at Render (free SSL auto-provisioned). Or put Cloudflare in front for free
+CDN + firewall.
 
 ## Honest limits
 
